@@ -248,3 +248,29 @@ jucer_export_target_configuration(
 )
 
 jucer_project_end()
+
+
+install(TARGETS JuceDemoPlugin_AU
+  DESTINATION "Plug-Ins/Components/"
+  COMPONENT JuceDemoPlugin_AU
+)
+# Describe the component, option A: set the variables (/!\ they are uppercased)
+set(CPACK_COMPONENT_JUCEDEMOPLUGIN_AU_DISPLAY_NAME "JuceDemoPlugin (AU)")
+set(CPACK_COMPONENT_JUCEDEMOPLUGIN_AU_DESCRIPTION "Install the AudioUnit plugin")
+
+install(TARGETS JuceDemoPlugin_VST
+  DESTINATION "Plug-Ins/VST/"
+  COMPONENT JuceDemoPlugin_VST
+)
+# Describe the component, option B: call cpack_add_component
+include(CPackComponent)
+cpack_add_component(JuceDemoPlugin_VST
+  DISPLAY_NAME "JuceDemoPlugin (VST)"
+  DESCRIPTION "Install the VST plugin"
+)
+
+set(CPACK_COMPONENTS_ALL JuceDemoPlugin_AU JuceDemoPlugin_VST)
+set(CPACK_GENERATOR "productbuild")
+set(CPACK_PACKAGING_INSTALL_PREFIX "/Library/Audio")
+
+include(CPack)
