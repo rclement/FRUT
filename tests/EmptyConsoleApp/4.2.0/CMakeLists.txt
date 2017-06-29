@@ -104,3 +104,6 @@ jucer_export_target_configuration(
 )
 
 jucer_project_end()
+
+
+message(STATUS "<CMAKE_MAKE_PROGRAM>${CMAKE_MAKE_PROGRAM}</CMAKE_MAKE_PROGRAM>")
