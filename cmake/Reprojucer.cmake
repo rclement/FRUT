@@ -2930,6 +2930,15 @@ function(_FRUT_set_compiler_and_linker_settings target)
   _FRUT_set_cxx_language_standard_properties(${target})
 
   if(APPLE)
+    if(CMAKE_GENERATOR STREQUAL "Xcode")
+      set_target_properties(${target} PROPERTIES
+        XCODE_ATTRIBUTE_GCC_WARN_ABOUT_RETURN_TYPE YES
+        XCODE_ATTRIBUTE_GCC_WARN_NON_VIRTUAL_DESTRUCTOR YES
+        XCODE_ATTRIBUTE_GCC_WARN_UNUSED_VARIABLE YES
+        XCODE_ATTRIBUTE_WARNING_CFLAGS -Wreorder
+      )
+    endif()
+
     foreach(config ${JUCER_PROJECT_CONFIGURATIONS})
       if(${JUCER_CONFIGURATION_IS_DEBUG_${config}})
         target_compile_definitions(${target} PRIVATE
