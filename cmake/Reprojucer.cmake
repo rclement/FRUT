@@ -635,6 +635,7 @@ function(jucer_export_target exporter)
       "VST3_SDK_FOLDER"
       "AAX_SDK_FOLDER"
       "RTAS_SDK_FOLDER"
+      "MANIFEST_FILE"
       "PLATFORM_TOOLSET"
       "USE_IPP_LIBRARY"
     )
@@ -790,6 +791,12 @@ function(jucer_export_target exporter)
       )
     endif()
     set(JUCER_USE_HEADERMAP "${_USE_HEADERMAP}" PARENT_SCOPE)
+  endif()
+
+  if(DEFINED _MANIFEST_FILE)
+    file(TO_CMAKE_PATH "${_MANIFEST_FILE}" manifest_file)
+    _FRUT_abs_path_based_on_jucer_project_dir(manifest_file "${manifest_file}")
+    set(JUCER_MANIFEST_FILE "${manifest_file}" PARENT_SCOPE)
   endif()
 
   if(DEFINED _PLATFORM_TOOLSET)
