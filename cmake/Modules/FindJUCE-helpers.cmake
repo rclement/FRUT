@@ -70,7 +70,9 @@ function(_FRUT_add_target_from_module_header module_header_file module_name)
         if(${module_name}_FIND_REQUIRED)
           set(required_kw REQUIRED)
         endif()
-        find_package(${dependency} ${exact_kw} ${quiet_kw} ${required_kw})
+        find_package(${dependency} ${${module_name}_FIND_VERSION}
+          ${exact_kw} ${quiet_kw} ${required_kw}
+        )
         if(${dependency}_FOUND)
           list(APPEND link_libraries JUCE::${dependency})
         else()
