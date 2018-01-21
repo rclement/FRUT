@@ -38,6 +38,8 @@ function(_FRUT_add_target_from_module_header module_header_file module_name)
       "\nUnexpected ID \"${module_ID}\" in the ${module_name} header file."
       " Please check that your installation of JUCE is not corrupted."
     )
+    set(${module_name}_NOT_FOUND_REASON ${${module_name}_NOT_FOUND_REASON} PARENT_SCOPE)
+    return()
   endif()
 
   # TODO, handle ${module_name}_FIND_VERSION and ${module_name}_FIND_VERSION_EXACT
@@ -46,6 +48,8 @@ function(_FRUT_add_target_from_module_header module_header_file module_name)
     string(APPEND ${module_name}_NOT_FOUND_REASON "\nFound version ${module_version} "
       "doesn't match requested version ${${module_name}_FIND_VERSION}."
     )
+    set(${module_name}_NOT_FOUND_REASON ${${module_name}_NOT_FOUND_REASON} PARENT_SCOPE)
+    return()
   endif()
   set(${module_name}_VERSION "${module_version}" PARENT_SCOPE)
 
