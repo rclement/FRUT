@@ -15,6 +15,4 @@
 # You should have received a copy of the GNU General Public License
 # along with FRUT.  If not, see <http://www.gnu.org/licenses/>.
 
-set(_this_module "juce_graphics")
 include("${CMAKE_CURRENT_LIST_DIR}/FindJUCE-find-module.cmake")
-unset(_this_module)

@@ -15,44 +15,47 @@
 # You should have received a copy of the GNU General Public License
 # along with FRUT.  If not, see <http://www.gnu.org/licenses/>.
 
-if(TARGET JUCE::${_this_module})
-  set(${_this_module}_FOUND TRUE)
+if(TARGET JUCE::${CMAKE_FIND_PACKAGE_NAME})
+  set(${CMAKE_FIND_PACKAGE_NAME}_FOUND TRUE)
   return()
 endif()
 
-set(${_this_module}_NOT_FOUND_REASON)
+set(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_REASON)
 
-find_file(${_this_module}_header "${_this_module}/${_this_module}.h"
+find_file(${CMAKE_FIND_PACKAGE_NAME}_header
+  "${CMAKE_FIND_PACKAGE_NAME}/${CMAKE_FIND_PACKAGE_NAME}.h"
   HINTS "${JUCE_ROOT}/modules" "${JUCE_MODULES_DIR}"
 )
 
-if(NOT ${_this_module}_header)
-  string(APPEND ${_this_module}_NOT_FOUND_REASON
-    "\nUnable to find the ${_this_module} header file."
+if(NOT ${CMAKE_FIND_PACKAGE_NAME}_header)
+  string(APPEND ${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_REASON
+    "\nUnable to find the ${CMAKE_FIND_PACKAGE_NAME} header file."
     " Please set JUCE_ROOT to the root directory containing JUCE or"
     " set JUCE_MODULES_DIR to the directory containing JUCE's modules."
   )
 else()
   include("${CMAKE_CURRENT_LIST_DIR}/FindJUCE-helpers.cmake")
-  _FRUT_add_target_from_module_header("${${_this_module}_header}" ${_this_module})
+  _FRUT_add_target_from_module_header("${${CMAKE_FIND_PACKAGE_NAME}_header}")
 endif()
 
-if(${_this_module}_NOT_FOUND_REASON)
-  set(${_this_module}_FOUND FALSE)
+if(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_REASON)
+  set(${CMAKE_FIND_PACKAGE_NAME}_FOUND FALSE)
 else()
-  set(${_this_module}_FOUND TRUE)
+  set(${CMAKE_FIND_PACKAGE_NAME}_FOUND TRUE)
 endif()
 
-if(${_this_module}_FOUND)
-  if(NOT ${_this_module}_FIND_QUIETLY)
-    message(STATUS "Found ${_this_module} (${${_this_module}_VERSION})")
+if(${CMAKE_FIND_PACKAGE_NAME}_FOUND)
+  if(NOT ${CMAKE_FIND_PACKAGE_NAME}_FIND_QUIETLY)
+    message(STATUS "Found ${CMAKE_FIND_PACKAGE_NAME}"
+      " (${${CMAKE_FIND_PACKAGE_NAME}_VERSION})"
+    )
   endif()
 else()
-  if(${_this_module}_FIND_REQUIRED)
-    message(SEND_ERROR
-      "Could not find ${_this_module}${${_this_module}_NOT_FOUND_REASON}\n"
+  if(${CMAKE_FIND_PACKAGE_NAME}_FIND_REQUIRED)
+    message(SEND_ERROR "Could not find ${CMAKE_FIND_PACKAGE_NAME}"
+      "${${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_REASON}\n"
     )
-  elseif(NOT ${_this_module}_FIND_QUIETLY)
-    message(STATUS "Could not find ${_this_module}")
+  elseif(NOT ${CMAKE_FIND_PACKAGE_NAME}_FIND_QUIETLY)
+    message(STATUS "Could not find ${CMAKE_FIND_PACKAGE_NAME}")
   endif()
 endif()

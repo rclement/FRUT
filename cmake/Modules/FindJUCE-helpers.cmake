@@ -21,66 +21,68 @@ endif()
 set(_FRUT_FindJUCE_helpers_INCLUDED TRUE)
 
 
-function(_FRUT_add_target_from_module_header module_header_file module_name)
+function(_FRUT_add_target_from_module_header module_header_file)
+
+  set(package_name ${CMAKE_FIND_PACKAGE_NAME})
 
   if(CMAKE_VERSION VERSION_LESS 3.1)
-    string(APPEND ${module_name}_NOT_FOUND_REASON
-      "\n${module_name} requires at least CMake version 3.1"
+    string(APPEND ${package_name}_NOT_FOUND_REASON
+      "\n${package_name} requires at least CMake version 3.1"
     )
-    set(${module_name}_NOT_FOUND_REASON ${${module_name}_NOT_FOUND_REASON} PARENT_SCOPE)
+    set(${package_name}_NOT_FOUND_REASON ${${package_name}_NOT_FOUND_REASON} PARENT_SCOPE)
     return()
   endif()
 
   _FRUT_parse_module_header("${module_header_file}")
 
-  if(NOT module_ID STREQUAL "${module_name}")
-    string(APPEND ${module_name}_NOT_FOUND_REASON
-      "\nUnexpected ID \"${module_ID}\" in the ${module_name} header file."
+  if(NOT module_ID STREQUAL "${package_name}")
+    string(APPEND ${package_name}_NOT_FOUND_REASON
+      "\nUnexpected ID \"${module_ID}\" in the ${package_name} header file."
       " Please check that your installation of JUCE is not corrupted."
     )
-    set(${module_name}_NOT_FOUND_REASON ${${module_name}_NOT_FOUND_REASON} PARENT_SCOPE)
+    set(${package_name}_NOT_FOUND_REASON ${${package_name}_NOT_FOUND_REASON} PARENT_SCOPE)
     return()
   endif()
 
-  # TODO, handle ${module_name}_FIND_VERSION and ${module_name}_FIND_VERSION_EXACT
-  if(${module_name}_FIND_VERSION_EXACT
-      AND NOT ${module_name}_FIND_VERSION VERSION_EQUAL module_version)
-    string(APPEND ${module_name}_NOT_FOUND_REASON "\nFound version ${module_version} "
-      "doesn't match requested version ${${module_name}_FIND_VERSION}."
+  # TODO, handle ${package_name}_FIND_VERSION and ${package_name}_FIND_VERSION_EXACT
+  if(${package_name}_FIND_VERSION_EXACT
+      AND NOT ${package_name}_FIND_VERSION VERSION_EQUAL module_version)
+    string(APPEND ${package_name}_NOT_FOUND_REASON "\nFound version ${module_version} "
+      "doesn't match requested version ${${package_name}_FIND_VERSION}."
     )
-    set(${module_name}_NOT_FOUND_REASON ${${module_name}_NOT_FOUND_REASON} PARENT_SCOPE)
+    set(${package_name}_NOT_FOUND_REASON ${${package_name}_NOT_FOUND_REASON} PARENT_SCOPE)
     return()
   endif()
-  set(${module_name}_VERSION "${module_version}" PARENT_SCOPE)
+  set(${package_name}_VERSION "${module_version}" PARENT_SCOPE)
 
   unset(compile_options)
   unset(link_libraries)
   unset(sources)
 
-  set(compile_definitions "JUCE_MODULE_AVAILABLE_${module_name}")
+  set(compile_definitions "JUCE_MODULE_AVAILABLE_${package_name}")
 
   if(module_dependencies)
     foreach(dependency ${module_dependencies})
       if(NOT ${dependency}_FOUND)
         set(exact_kw)
-        if(${module_name}_FIND_VERSION_EXACT)
+        if(${package_name}_FIND_VERSION_EXACT)
           set(exact_kw EXACT)
         endif()
         set(quiet_kw)
-        if(${module_name}_FIND_QUIETLY)
+        if(${package_name}_FIND_QUIETLY)
           set(quiet_kw QUIET)
         endif()
         set(required_kw)
-        if(${module_name}_FIND_REQUIRED)
+        if(${package_name}_FIND_REQUIRED)
           set(required_kw REQUIRED)
         endif()
-        find_package(${dependency} ${${module_name}_FIND_VERSION}
+        find_package(${dependency} ${${package_name}_FIND_VERSION}
           ${exact_kw} ${quiet_kw} ${required_kw}
         )
         if(${dependency}_FOUND)
           list(APPEND link_libraries JUCE::${dependency})
         else()
-          string(APPEND ${module_name}_NOT_FOUND_REASON
+          string(APPEND ${package_name}_NOT_FOUND_REASON
             "\nCould not find ${dependency}."
           )
         endif()
@@ -93,7 +95,7 @@ function(_FRUT_add_target_from_module_header module_header_file module_name)
       foreach(framework_name ${module_OSXFrameworks})
         find_library(${framework_name}_framework ${framework_name})
         if(NOT ${framework_name}_framework)
-          string(APPEND ${module_name}_NOT_FOUND_REASON
+          string(APPEND ${package_name}_NOT_FOUND_REASON
             "\nCould not find OSX framework ${framework_name}."
           )
         endif()
@@ -108,7 +110,7 @@ function(_FRUT_add_target_from_module_header module_header_file module_name)
       foreach(package_name ${module_linuxPackages})
         pkg_check_modules(${package_name}_pkg "${package_name}")
         if(NOT ${package_name}_pkg_FOUND)
-          string(APPEND ${module_name}_NOT_FOUND_REASON
+          string(APPEND ${package_name}_NOT_FOUND_REASON
             "\npkg-config could not find ${package_name}."
           )
         endif()
@@ -160,9 +162,9 @@ function(_FRUT_add_target_from_module_header module_header_file module_name)
     endif()
   endforeach()
 
-  if(NOT ${module_name}_NOT_FOUND_REASON)
-    add_library(JUCE::${module_name} INTERFACE IMPORTED)
-    set_target_properties(JUCE::${module_name} PROPERTIES
+  if(NOT ${package_name}_NOT_FOUND_REASON)
+    add_library(JUCE::${package_name} INTERFACE IMPORTED)
+    set_target_properties(JUCE::${package_name} PROPERTIES
       INTERFACE_COMPILE_DEFINITIONS "${compile_definitions}"
       INTERFACE_COMPILE_OPTIONS "${compile_options}"
       INTERFACE_LINK_LIBRARIES "${link_libraries}"
@@ -170,7 +172,7 @@ function(_FRUT_add_target_from_module_header module_header_file module_name)
     )
   endif()
 
-  set(${module_name}_NOT_FOUND_REASON ${${module_name}_NOT_FOUND_REASON} PARENT_SCOPE)
+  set(${package_name}_NOT_FOUND_REASON ${${package_name}_NOT_FOUND_REASON} PARENT_SCOPE)
 
 endfunction()
 
