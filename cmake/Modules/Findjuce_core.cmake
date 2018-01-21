@@ -22,6 +22,10 @@ endif()
 
 set(juce_core_NOT_FOUND_MSG)
 
+if(NOT juce_core_header_file STREQUAL "${JUCE_ROOT}/modules/juce_core/juce_core.h"
+  AND NOT juce_core_header_file STREQUAL "${JUCE_modules_DIR}/juce_core/juce_core.h")
+  unset(juce_core_header_file CACHE)
+endif()
 find_file(juce_core_header_file "juce_core/juce_core.h"
   HINTS "${JUCE_ROOT}/modules" "${JUCE_modules_DIR}"
 )
