@@ -20,14 +20,14 @@ if(TARGET JUCE::juce_core)
   return()
 endif()
 
-set(juce_core_NOT_FOUND_REASON)
+set(juce_core_NOT_FOUND_MSG)
 
 find_file(juce_core_header "juce_core/juce_core.h"
   HINTS "${JUCE_ROOT}/modules" "${JUCE_MODULES_DIR}"
 )
 
 if(NOT juce_core_header)
-  string(APPEND juce_core_NOT_FOUND_REASON
+  string(APPEND juce_core_NOT_FOUND_MSG
     "\nUnable to find the juce_core header file."
     " Please set JUCE_ROOT to the root directory containing JUCE or"
     " set JUCE_MODULES_DIR to the directory containing JUCE's modules."
@@ -57,7 +57,7 @@ else()
   endif()
 endif()
 
-if(juce_core_NOT_FOUND_REASON)
+if(juce_core_NOT_FOUND_MSG)
   set(juce_core_FOUND FALSE)
 else()
   set(juce_core_FOUND TRUE)
@@ -69,7 +69,7 @@ if(juce_core_FOUND)
   endif()
 else()
   if(juce_core_FIND_REQUIRED)
-    message(SEND_ERROR "Could not find juce_core${juce_core_NOT_FOUND_REASON}\n")
+    message(SEND_ERROR "Could not find juce_core${juce_core_NOT_FOUND_MSG}\n")
   elseif(NOT juce_core_FIND_QUIETLY)
     message(STATUS "Could not find juce_core")
   endif()

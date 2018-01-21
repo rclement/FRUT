@@ -20,7 +20,7 @@ if(TARGET JUCE::${CMAKE_FIND_PACKAGE_NAME})
   return()
 endif()
 
-set(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_REASON)
+set(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MSG)
 
 find_file(${CMAKE_FIND_PACKAGE_NAME}_header
   "${CMAKE_FIND_PACKAGE_NAME}/${CMAKE_FIND_PACKAGE_NAME}.h"
@@ -28,7 +28,7 @@ find_file(${CMAKE_FIND_PACKAGE_NAME}_header
 )
 
 if(NOT ${CMAKE_FIND_PACKAGE_NAME}_header)
-  string(APPEND ${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_REASON
+  string(APPEND ${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MSG
     "\nUnable to find the ${CMAKE_FIND_PACKAGE_NAME} header file."
     " Please set JUCE_ROOT to the root directory containing JUCE or"
     " set JUCE_MODULES_DIR to the directory containing JUCE's modules."
@@ -38,7 +38,7 @@ else()
   _FRUT_add_target_from_module_header("${${CMAKE_FIND_PACKAGE_NAME}_header}")
 endif()
 
-if(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_REASON)
+if(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MSG)
   set(${CMAKE_FIND_PACKAGE_NAME}_FOUND FALSE)
 else()
   set(${CMAKE_FIND_PACKAGE_NAME}_FOUND TRUE)
@@ -53,7 +53,7 @@ if(${CMAKE_FIND_PACKAGE_NAME}_FOUND)
 else()
   if(${CMAKE_FIND_PACKAGE_NAME}_FIND_REQUIRED)
     message(SEND_ERROR "Could not find ${CMAKE_FIND_PACKAGE_NAME}"
-      "${${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_REASON}\n"
+      "${${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MSG}\n"
     )
   elseif(NOT ${CMAKE_FIND_PACKAGE_NAME}_FIND_QUIETLY)
     message(STATUS "Could not find ${CMAKE_FIND_PACKAGE_NAME}")
