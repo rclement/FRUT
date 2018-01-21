@@ -21,7 +21,7 @@ endif()
 set(_FRUT_FindJUCE_helpers_INCLUDED TRUE)
 
 
-function(_JUCE_add_target_from_module_header module_header_file module_name)
+function(_FRUT_add_target_from_module_header module_header_file module_name)
 
   if(CMAKE_VERSION VERSION_LESS 3.1)
     string(APPEND ${module_name}_NOT_FOUND_REASON
@@ -31,7 +31,7 @@ function(_JUCE_add_target_from_module_header module_header_file module_name)
     return()
   endif()
 
-  _JUCE_parse_module_header("${module_header_file}")
+  _FRUT_parse_module_header("${module_header_file}")
 
   if(NOT module_ID STREQUAL "${module_name}")
     string(APPEND ${module_name}_NOT_FOUND_REASON
@@ -169,7 +169,7 @@ function(_JUCE_add_target_from_module_header module_header_file module_name)
 endfunction()
 
 
-function(_JUCE_parse_module_header module_header_file)
+function(_FRUT_parse_module_header module_header_file)
 
   if(NOT EXISTS "${module_header_file}")
     message(FATAL_ERROR "No such file: ${module_header_file}")

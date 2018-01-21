@@ -31,7 +31,7 @@ if(NOT TARGET JUCE::${_this_module})
 
   else()
     include("${CMAKE_CURRENT_LIST_DIR}/FindJUCE-helpers.cmake")
-    _JUCE_add_target_from_module_header("${${_this_module}_header}" ${_this_module})
+    _FRUT_add_target_from_module_header("${${_this_module}_header}" ${_this_module})
   endif()
 endif()
 
