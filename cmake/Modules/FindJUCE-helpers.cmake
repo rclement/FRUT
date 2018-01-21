@@ -15,6 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with FRUT.  If not, see <http://www.gnu.org/licenses/>.
 
+if(_FRUT_FindJUCE_helpers_INCLUDED)
+  return()
+endif()
+set(_FRUT_FindJUCE_helpers_INCLUDED TRUE)
+
+
 function(_JUCE_add_target_from_module_header module_header_file module_name)
 
   if(CMAKE_VERSION VERSION_LESS 3.1)
