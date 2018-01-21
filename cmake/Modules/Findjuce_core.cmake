@@ -22,11 +22,11 @@ endif()
 
 set(juce_core_NOT_FOUND_MSG)
 
-find_file(juce_core_header "juce_core/juce_core.h"
+find_file(juce_core_header_file "juce_core/juce_core.h"
   HINTS "${JUCE_ROOT}/modules" "${JUCE_modules_DIR}"
 )
 
-if(NOT juce_core_header)
+if(NOT juce_core_header_file)
   string(APPEND juce_core_NOT_FOUND_MSG
     "\nUnable to find the juce_core header file."
     " Please set JUCE_ROOT to the root directory containing JUCE or"
@@ -34,7 +34,7 @@ if(NOT juce_core_header)
   )
 else()
   include("${CMAKE_CURRENT_LIST_DIR}/FindJUCE-helpers.cmake")
-  _FRUT_add_target_from_module_header("${juce_core_header}" juce_core)
+  _FRUT_add_target_from_module_header_file("${juce_core_header_file}")
 
   if(TARGET JUCE::juce_core)
     string(CONCAT _define_JUCE_STANDALONE_APPLICATION
@@ -49,7 +49,7 @@ else()
       "${_define_JUCE_STANDALONE_APPLICATION}"
     )
 
-    get_filename_component(juce_core_dir "${juce_core_header}" DIRECTORY)
+    get_filename_component(juce_core_dir "${juce_core_header_file}" DIRECTORY)
     get_filename_component(juce_modules_dir "${juce_core_dir}" DIRECTORY)
     set_property(TARGET JUCE::juce_core APPEND PROPERTY
       INTERFACE_INCLUDE_DIRECTORIES "${juce_modules_dir}"
@@ -69,7 +69,7 @@ if(juce_core_FOUND)
   endif()
 else()
   if(juce_core_FIND_REQUIRED)
-    message(SEND_ERROR "Could not find juce_core${juce_core_NOT_FOUND_MSG}\n")
+    message(SEND_ERROR "Could not find juce_core${juce_core_NOT_FOUND_MSG}")
   elseif(NOT juce_core_FIND_QUIETLY)
     message(STATUS "Could not find juce_core")
   endif()

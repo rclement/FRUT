@@ -22,12 +22,12 @@ endif()
 
 set(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MSG)
 
-find_file(${CMAKE_FIND_PACKAGE_NAME}_header
+find_file(${CMAKE_FIND_PACKAGE_NAME}_header_file
   "${CMAKE_FIND_PACKAGE_NAME}/${CMAKE_FIND_PACKAGE_NAME}.h"
   HINTS "${JUCE_ROOT}/modules" "${JUCE_modules_DIR}"
 )
 
-if(NOT ${CMAKE_FIND_PACKAGE_NAME}_header)
+if(NOT ${CMAKE_FIND_PACKAGE_NAME}_header_file)
   string(APPEND ${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MSG
     "\nUnable to find the ${CMAKE_FIND_PACKAGE_NAME} header file."
     " Please set JUCE_ROOT to the root directory containing JUCE or"
@@ -35,7 +35,7 @@ if(NOT ${CMAKE_FIND_PACKAGE_NAME}_header)
   )
 else()
   include("${CMAKE_CURRENT_LIST_DIR}/FindJUCE-helpers.cmake")
-  _FRUT_add_target_from_module_header("${${CMAKE_FIND_PACKAGE_NAME}_header}")
+  _FRUT_add_target_from_module_header_file("${${CMAKE_FIND_PACKAGE_NAME}_header_file}")
 endif()
 
 if(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MSG)
