@@ -44,6 +44,8 @@ function(_FRUT_add_target_from_module_header module_header_file)
     return()
   endif()
 
+  set(${package_name}_VERSION "${module_version}" PARENT_SCOPE)
+
   # TODO, handle ${package_name}_FIND_VERSION and ${package_name}_FIND_VERSION_EXACT
   if(${package_name}_FIND_VERSION_EXACT
       AND NOT ${package_name}_FIND_VERSION VERSION_EQUAL module_version)
@@ -53,7 +55,6 @@ function(_FRUT_add_target_from_module_header module_header_file)
     set(${package_name}_NOT_FOUND_MSG ${${package_name}_NOT_FOUND_MSG} PARENT_SCOPE)
     return()
   endif()
-  set(${package_name}_VERSION "${module_version}" PARENT_SCOPE)
 
   unset(compile_options)
   unset(link_libraries)
