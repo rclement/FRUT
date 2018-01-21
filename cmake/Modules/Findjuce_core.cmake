@@ -23,14 +23,14 @@ endif()
 set(juce_core_NOT_FOUND_MSG)
 
 find_file(juce_core_header "juce_core/juce_core.h"
-  HINTS "${JUCE_ROOT}/modules" "${JUCE_MODULES_DIR}"
+  HINTS "${JUCE_ROOT}/modules" "${JUCE_modules_DIR}"
 )
 
 if(NOT juce_core_header)
   string(APPEND juce_core_NOT_FOUND_MSG
     "\nUnable to find the juce_core header file."
     " Please set JUCE_ROOT to the root directory containing JUCE or"
-    " set JUCE_MODULES_DIR to the directory containing JUCE's modules."
+    " set JUCE_modules_DIR to the directory containing JUCE's modules."
   )
 else()
   include("${CMAKE_CURRENT_LIST_DIR}/FindJUCE-helpers.cmake")
