@@ -17,6 +17,14 @@
 
 function(_JUCE_add_target_from_module_header module_header_file module_name)
 
+  if(CMAKE_VERSION VERSION_LESS 3.1)
+    string(APPEND ${module_name}_NOT_FOUND_REASON
+      "\n${module_name} requires at least CMake version 3.1"
+    )
+    set(${module_name}_NOT_FOUND_REASON ${${module_name}_NOT_FOUND_REASON} PARENT_SCOPE)
+    return()
+  endif()
+
   _JUCE_parse_module_header("${module_header_file}")
 
   if(NOT module_ID STREQUAL "${module_name}")
