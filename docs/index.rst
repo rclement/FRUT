@@ -30,6 +30,15 @@ User documentation
   /Reprojucer.cmake/index
 
 
+Talks and posters
+-----------------
+
+.. toctree::
+  :maxdepth: 1
+
+  /ADC-2017/index
+
+
 .. _CMake: https://cmake.org/
 .. _JUCE 4.2.0: https://github.com/WeAreROLI/JUCE/tree/4.2.0
 .. _JUCE 4.3.1: https://github.com/WeAreROLI/JUCE/tree/4.3.1
