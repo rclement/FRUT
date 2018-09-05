@@ -15,7 +15,43 @@
 // You should have received a copy of the GNU General Public License
 // along with FRUT.  If not, see <http://www.gnu.org/licenses/>.
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-align"
+#pragma clang diagnostic ignored "-Wcast-qual"
+#pragma clang diagnostic ignored "-Wdocumentation-deprecated-sync"
+#pragma clang diagnostic ignored "-Wextra-semi"
+#pragma clang diagnostic ignored "-Wglobal-constructors"
+#pragma clang diagnostic ignored "-Wimplicit-fallthrough"
+#pragma clang diagnostic ignored "-Wold-style-cast"
+#pragma clang diagnostic ignored "-Wundef"
+#if __has_warning("-Wundefined-func-template")
+#pragma clang diagnostic ignored "-Wundefined-func-template"
+#endif
+#if __has_warning("-Wunused-template")
+#pragma clang diagnostic ignored "-Wunused-template"
+#endif
+#if __has_warning("-Wzero-as-null-pointer-constant")
+#pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
+#endif
+#if __has_warning("-Winconsistent-missing-destructor-override")
+#pragma clang diagnostic ignored "-Winconsistent-missing-destructor-override"
+#endif
+#endif // defined(__clang__)
+
+#if defined(_MSC_VER)
+#pragma warning(push, 0)
+#endif
+
 #include "JuceHeader.h"
+
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 #include <algorithm>
 #include <cstdlib>

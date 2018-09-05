@@ -78,18 +78,21 @@ jucer_project_module(
   juce_core
   PATH "${JUCE_ROOT}/modules"
   ADD_SOURCE_TO_PROJECT OFF
+  COMPILE_IN_TARGET "JuceModules"
 )
 
 jucer_project_module(
   juce_data_structures
   PATH "${JUCE_ROOT}/modules"
   ADD_SOURCE_TO_PROJECT OFF
+  COMPILE_IN_TARGET "JuceModules"
 )
 
 jucer_project_module(
   juce_events
   PATH "${JUCE_ROOT}/modules"
   ADD_SOURCE_TO_PROJECT OFF
+  COMPILE_IN_TARGET "JuceModules"
 )
 
 jucer_export_target(
@@ -99,39 +102,11 @@ jucer_export_target(
     "-Weverything"
     "-Wno-c++98-compat"
     "-Wno-c++98-compat-pedantic"
-    "-Wno-cast-align"
-    "-Wno-cast-qual"
-    "-Wno-comma"
-    "-Wno-covered-switch-default"
-    "-Wno-date-time"
-    "-Wno-deprecated"
-    "-Wno-disabled-macro-expansion"
     "-Wno-documentation"
     "-Wno-documentation-unknown-command"
     "-Wno-exit-time-destructors"
-    "-Wno-extra-semi"
-    "-Wno-float-equal"
-    "-Wno-global-constructors"
-    "-Wno-implicit-fallthrough"
-    "-Wno-inconsistent-missing-destructor-override"
-    "-Wno-missing-noreturn"
-    "-Wno-missing-prototypes"
-    "-Wno-missing-variable-declarations"
-    "-Wno-nullable-to-nonnull-conversion"
-    "-Wno-old-style-cast"
     "-Wno-padded"
-    "-Wno-reorder"
-    "-Wno-reserved-id-macro"
-    "-Wno-strict-selector-match"
-    "-Wno-switch-enum"
-    "-Wno-undeclared-selector"
-    "-Wno-undef"
-    "-Wno-undefined-func-template"
-    "-Wno-undefined-reinterpret-cast"
-    "-Wno-unknown-warning-option"
-    "-Wno-unused-template"
     "-Wno-weak-vtables"
-    "-Wno-zero-as-null-pointer-constant"
 )
 
 jucer_export_target_configuration(
@@ -170,7 +145,6 @@ jucer_export_target(
   EXTRA_COMPILER_FLAGS
     "/WX"
     "/W4"
-    "/wd4592"
 )
 
 jucer_export_target_configuration(
@@ -210,7 +184,6 @@ jucer_export_target(
     "-Werror"
     "-Wall"
     "-Wextra"
-    "-Wno-implicit-fallthrough"
 )
 
 jucer_export_target_configuration(
@@ -226,6 +199,14 @@ jucer_export_target_configuration(
 )
 
 jucer_project_end()
+
+
+# Disable all warnings from JUCE modules
+if(MSVC)
+  target_compile_options("JuceModules" PRIVATE "/W0")
+else()
+  target_compile_options("JuceModules" PRIVATE "-w")
+endif()
 
 
 install(TARGETS Jucer2Reprojucer DESTINATION "FRUT/bin")
