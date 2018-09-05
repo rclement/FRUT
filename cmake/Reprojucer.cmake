@@ -416,6 +416,7 @@ function(jucer_project_module module_name PATH_KEYWORD modules_folder)
     set(proxy_prefix "include_")
   endif()
 
+  set(module_sources "")
   foreach(src_file ${module_src_files})
     unset(to_compile)
 
@@ -460,13 +461,13 @@ function(jucer_project_module module_name PATH_KEYWORD modules_folder)
       configure_file("${Reprojucer_templates_DIR}/JuceLibraryCode-Wrapper.cpp"
         "JuceLibraryCode/${proxy_prefix}${src_file_basename}"
       )
-      list(APPEND JUCER_PROJECT_SOURCES
+      list(APPEND module_sources
         "${CMAKE_CURRENT_BINARY_DIR}/JuceLibraryCode/${proxy_prefix}${src_file_basename}"
       )
     endif()
   endforeach()
 
-  set(JUCER_PROJECT_SOURCES "${JUCER_PROJECT_SOURCES}" PARENT_SCOPE)
+  set(JUCER_PROJECT_MODULE_${module_name}_SOURCES "${module_sources}" PARENT_SCOPE)
 
   file(STRINGS "${module_header_file}" config_flags_lines REGEX "/\\*\\* Config: ")
   string(REPLACE "/** Config: " "" module_config_flags "${config_flags_lines}")
@@ -1500,8 +1501,15 @@ function(jucer_project_end)
     unset(JUCER_PROJECT_XCODE_RESOURCES)
   endif()
 
+  set(modules_sources "")
+  foreach(module_name ${JUCER_PROJECT_MODULES})
+    set(module_sources "${JUCER_PROJECT_MODULE_${module_name}_SOURCES}")
+    list(APPEND modules_sources ${module_sources})
+  endforeach()
+
   set(all_sources
     ${JUCER_PROJECT_SOURCES}
+    ${modules_sources}
     ${JUCER_PROJECT_RESOURCES}
     ${JUCER_PROJECT_BROWSABLE_FILES}
     ${JUCER_PROJECT_XCODE_RESOURCES}
@@ -1593,7 +1601,7 @@ function(jucer_project_end)
     set(VST3_sources "")
     set(Standalone_sources "")
     set(SharedCode_sources "")
-    foreach(src_file ${JUCER_PROJECT_SOURCES})
+    foreach(src_file ${JUCER_PROJECT_SOURCES} ${modules_sources})
       # See Project::getTargetTypeFromFilePath()
       # in JUCE/extras/Projucer/Source/Project/jucer_Project.cpp
       if(src_file MATCHES "_AU[._]")
