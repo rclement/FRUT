@@ -2875,6 +2875,11 @@ endfunction()
 
 function(_FRUT_set_compiler_and_linker_settings target)
 
+  set(with_linker_settings TRUE)
+  if(ARGV1 STREQUAL "COMPILER_SETTINGS_ONLY")
+    set(with_linker_settings FALSE)
+  endif()
+
   target_include_directories(${target} PRIVATE
     "${CMAKE_CURRENT_BINARY_DIR}/JuceLibraryCode"
     ${JUCER_PROJECT_MODULES_FOLDERS}
@@ -2923,7 +2928,9 @@ function(_FRUT_set_compiler_and_linker_settings target)
     target_compile_definitions(${target} PRIVATE $<$<CONFIG:${config}>:${definitions}>)
   endforeach()
 
-  target_link_libraries(${target} PRIVATE ${JUCER_EXTERNAL_LIBRARIES_TO_LINK})
+  if(with_linker_settings)
+    target_link_libraries(${target} PRIVATE ${JUCER_EXTERNAL_LIBRARIES_TO_LINK})
+  endif()
 
   _FRUT_set_cxx_language_standard_properties(${target})
 
@@ -2956,9 +2963,11 @@ function(_FRUT_set_compiler_and_linker_settings target)
         target_compile_options(${target} PRIVATE $<$<CONFIG:${config}>:-flto>)
       endif()
 
-      foreach(path ${JUCER_EXTRA_LIBRARY_SEARCH_PATHS_${config}})
-        target_link_libraries(${target} PRIVATE $<$<CONFIG:${config}>:-L${path}>)
-      endforeach()
+      if(with_linker_settings)
+        foreach(path ${JUCER_EXTRA_LIBRARY_SEARCH_PATHS_${config}})
+          target_link_libraries(${target} PRIVATE $<$<CONFIG:${config}>:-L${path}>)
+        endforeach()
+      endif()
     endforeach()
 
     if(target MATCHES "_AUv3_AppExtension$")
@@ -3146,25 +3155,27 @@ function(_FRUT_set_compiler_and_linker_settings target)
         target_compile_options(${target} PRIVATE $<$<CONFIG:${config}>:/fp:fast>)
       endif()
 
-      foreach(path ${JUCER_EXTRA_LIBRARY_SEARCH_PATHS_${config}})
-        target_link_libraries(${target} PRIVATE $<$<CONFIG:${config}>:-LIBPATH:${path}>)
-      endforeach()
+      if(with_linker_settings)
+        foreach(path ${JUCER_EXTRA_LIBRARY_SEARCH_PATHS_${config}})
+          target_link_libraries(${target} PRIVATE $<$<CONFIG:${config}>:-LIBPATH:${path}>)
+        endforeach()
 
-      if(DEFINED JUCER_INCREMENTAL_LINKING_${config})
-        if(JUCER_INCREMENTAL_LINKING_${config})
-          string(TOUPPER "${config}" upper_config)
-          set_property(TARGET ${target}
-            APPEND PROPERTY LINK_FLAGS_${upper_config} "/INCREMENTAL"
-          )
+        if(DEFINED JUCER_INCREMENTAL_LINKING_${config})
+          if(JUCER_INCREMENTAL_LINKING_${config})
+            string(TOUPPER "${config}" upper_config)
+            set_property(TARGET ${target}
+              APPEND PROPERTY LINK_FLAGS_${upper_config} "/INCREMENTAL"
+            )
+          endif()
         endif()
-      endif()
 
-      if(DEFINED JUCER_GENERATE_MANIFEST_${config})
-        if(NOT JUCER_GENERATE_MANIFEST_${config})
-          string(TOUPPER "${config}" upper_config)
-          set_property(TARGET ${target}
-            APPEND PROPERTY LINK_FLAGS_${upper_config} "/MANIFEST:NO"
-          )
+        if(DEFINED JUCER_GENERATE_MANIFEST_${config})
+          if(NOT JUCER_GENERATE_MANIFEST_${config})
+            string(TOUPPER "${config}" upper_config)
+            set_property(TARGET ${target}
+              APPEND PROPERTY LINK_FLAGS_${upper_config} "/MANIFEST:NO"
+            )
+          endif()
         endif()
       endif()
     endforeach()
@@ -3191,9 +3202,11 @@ function(_FRUT_set_compiler_and_linker_settings target)
         $<$<CONFIG:${config}>:${architecture_flag}>
       )
 
-      foreach(path ${JUCER_EXTRA_LIBRARY_SEARCH_PATHS_${config}})
-        target_link_libraries(${target} PRIVATE $<$<CONFIG:${config}>:-L${path}>)
-      endforeach()
+      if(with_linker_settings)
+        foreach(path ${JUCER_EXTRA_LIBRARY_SEARCH_PATHS_${config}})
+          target_link_libraries(${target} PRIVATE $<$<CONFIG:${config}>:-L${path}>)
+        endforeach()
+      endif()
     endforeach()
 
     set(linux_packages ${JUCER_PROJECT_LINUX_PACKAGES} ${JUCER_PKGCONFIG_LIBRARIES})
@@ -3207,13 +3220,15 @@ function(_FRUT_set_compiler_and_linker_settings target)
           message(FATAL_ERROR "pkg-config could not find ${pkg}")
         endif()
         target_compile_options(${target} PRIVATE ${${pkg}_CFLAGS})
-        target_link_libraries(${target} PRIVATE ${${pkg}_LIBRARIES})
+        if(with_linker_settings)
+          target_link_libraries(${target} PRIVATE ${${pkg}_LIBRARIES})
+        endif()
       endforeach()
     else()
       if("juce_graphics" IN_LIST JUCER_PROJECT_MODULES)
         target_include_directories(${target} PRIVATE "/usr/include/freetype2")
       endif()
-      if(JUCER_FLAG_JUCE_USE_CURL)
+      if(JUCER_FLAG_JUCE_USE_CURL AND with_linker_settings)
         target_link_libraries(${target} PRIVATE "-lcurl")
       endif()
     endif()
@@ -3226,13 +3241,17 @@ function(_FRUT_set_compiler_and_linker_settings target)
         if(item STREQUAL "pthread")
           target_compile_options(${target} PRIVATE "-pthread")
         endif()
-        target_link_libraries(${target} PRIVATE "-l${item}")
+        if(with_linker_settings)
+          target_link_libraries(${target} PRIVATE "-l${item}")
+        endif()
       endforeach()
     endif()
   endif()
 
   target_compile_options(${target} PRIVATE ${JUCER_EXTRA_COMPILER_FLAGS})
-  target_link_libraries(${target} PRIVATE ${JUCER_EXTRA_LINKER_FLAGS})
+  if(with_linker_settings)
+    target_link_libraries(${target} PRIVATE ${JUCER_EXTRA_LINKER_FLAGS})
+  endif()
 
 endfunction()
 
