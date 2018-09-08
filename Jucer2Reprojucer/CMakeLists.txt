@@ -78,21 +78,21 @@ jucer_project_module(
   juce_core
   PATH "${JUCE_ROOT}/modules"
   ADD_SOURCE_TO_PROJECT OFF
-  COMPILE_IN_TARGET "JuceModules"
+  COMPILE_AS_TARGET "JuceModules"
 )
 
 jucer_project_module(
   juce_data_structures
   PATH "${JUCE_ROOT}/modules"
   ADD_SOURCE_TO_PROJECT OFF
-  COMPILE_IN_TARGET "JuceModules"
+  COMPILE_AS_TARGET "JuceModules"
 )
 
 jucer_project_module(
   juce_events
   PATH "${JUCE_ROOT}/modules"
   ADD_SOURCE_TO_PROJECT OFF
-  COMPILE_IN_TARGET "JuceModules"
+  COMPILE_AS_TARGET "JuceModules"
 )
 
 jucer_export_target(
