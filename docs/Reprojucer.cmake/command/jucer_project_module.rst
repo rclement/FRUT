@@ -59,7 +59,7 @@ CMakeLists.txt#L77-L82>`_:
     juce_core
     PATH "${JUCE_ROOT}/modules"
     ADD_SOURCE_TO_PROJECT OFF
-    COMPILE_IN_TARGET "JuceModules"
+    COMPILE_AS_TARGET "JuceModules"
   )
 
 In this case, ``juce_core.cpp`` is compiled in the ``JuceModules`` target instead of in
