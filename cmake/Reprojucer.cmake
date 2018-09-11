@@ -2368,6 +2368,11 @@ function(_FRUT_generate_AppConfig_header)
       "AAXIdentifier" "AAXManufacturerCode" "AAXProductId" "AAXCategory"
       "AAXDisableBypass" "AAXDisableMultiMono"
     )
+    if(NOT (DEFINED JUCER_VERSION AND JUCER_VERSION VERSION_LESS 5.0.0))
+      list(APPEND audio_plugin_setting_names
+        "IAAType" "IAASubType" "IAAName"
+      )
+    endif()
 
     _FRUT_bool_to_int("${JUCER_BUILD_VST}" Build_VST_value)
     _FRUT_bool_to_int("${JUCER_BUILD_VST3}" Build_VST3_value)
