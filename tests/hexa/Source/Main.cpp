@@ -1,17 +1,7 @@
-/*
-  ==============================================================================
+#include <juce_core/juce_core.h>
 
-    This file was auto-generated!
 
-    It contains the basic startup code for a JUCE application.
-
-  ==============================================================================
-*/
-
-#include "../JuceLibraryCode/JuceHeader.h"
-
-//==============================================================================
-int main (int argc, char* argv[])
+int main(int argc, char* argv[])
 {
-    return 6;
+  return 6;
 }
