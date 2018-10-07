@@ -622,15 +622,10 @@ function(jucer_export_target exporter)
       "KEEP_CUSTOM_XCODE_SCHEMES"
       "USE_HEADERMAP"
     )
-    list(APPEND multi_value_keywords
-      "CUSTOM_XCODE_RESOURCE_FOLDERS"
-      "EXTRA_FRAMEWORKS"
-    )
+    list(APPEND multi_value_keywords "CUSTOM_XCODE_RESOURCE_FOLDERS" "EXTRA_FRAMEWORKS")
 
     if(JUCER_PROJECT_TYPE STREQUAL "GUI Application")
-      list(APPEND multi_value_keywords
-        "DOCUMENT_FILE_EXTENSIONS"
-      )
+      list(APPEND multi_value_keywords "DOCUMENT_FILE_EXTENSIONS")
     endif()
   endif()
 
@@ -651,12 +646,8 @@ function(jucer_export_target exporter)
   endif()
 
   if(exporter STREQUAL "Linux Makefile")
-    list(APPEND single_value_keywords
-      "CXX_STANDARD_TO_USE"
-    )
-    list(APPEND multi_value_keywords
-      "PKGCONFIG_LIBRARIES"
-    )
+    list(APPEND single_value_keywords "CXX_STANDARD_TO_USE")
+    list(APPEND multi_value_keywords "PKGCONFIG_LIBRARIES")
   endif()
 
   _FRUT_parse_arguments("${single_value_keywords}" "${multi_value_keywords}" "${ARGN}")
@@ -971,9 +962,7 @@ function(jucer_export_target_configuration
   endif()
 
   if(exporter STREQUAL "Linux Makefile")
-    list(APPEND single_value_keywords
-      "ARCHITECTURE"
-    )
+    list(APPEND single_value_keywords "ARCHITECTURE")
   endif()
 
   _FRUT_parse_arguments("${single_value_keywords}" "${multi_value_keywords}" "${ARGN}")
